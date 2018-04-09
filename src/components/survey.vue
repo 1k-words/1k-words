@@ -99,7 +99,7 @@
       .top
         .row
           .title Thank you!
-          .blurb If you are interested in receiving (rare) updates as the film progresses submit your email address below.
+          .blurb If you are interested in receiving a few updates as the film progresses, submit your email address below.
           .blurb.never We will never share your email address with anyone!
         .row.form
           input.spider(name="spiderweb" ref="spiderweb2")
@@ -120,7 +120,8 @@
           .content
             .title Faith Crisis Film : Survey
             .sub Est. Completion Time : <span>1 minute</span>
-            .blurb We are creating a film about a marriage where one spouse experiences a crushing crisis of faith and leaves the church permanently while the other remains. We seek to tell their story in such a way that the we feel love, empathy, and understanding for both spouses.
+            .blurb We are creating a film about a marriage where one spouse experiences a crisis of faith and leaves the church permanently while the other remains. We're telling the story of their difficulties and heartache as well as their opportunities for kindness, growth, &amp; love.
+
             .more(@click="showDetails=!showDetails")
               .cross(v-bind:class="{'close': showDetails }")
                 img(src="../assets/compiled/cross.svg")
@@ -128,9 +129,9 @@
               span(v-if="showDetails") Hide
             transition(name="fade")
               .blurb.full-details(v-if="showDetails" )
-                p Most members of the church have loved ones who have experienced a crisis of faith and a loss of testimony. This heart-wrenching experience can shatter family relationships and often cause seemingly irreparable rifts.
-                p I am telling the story of a couple who deeply love each other but find themselves in opposing camps when one of them leaves the LDS Church. Can their marriage survive such a devastating event? Should it?
-                p This story is NOT anti-mormon, nor is it an anti-Intellectual.  In fact, controversial faith issues have little-to-zero presence in the the story. Rather, this is a story of relationships, of love, of finding understanding and being understood. It is a chance for the viewer, regardless of which “side” they find themselves on, to feel a pull to return to a place of love; to try understanding and empathy over fear and hatred. Ultimately to remember that seemingly insurmountable divisions should not destroy our most cherished relationships.
+                p Many members of the LDS church are experiencing very real crises of faith and loss of belief. This painful experience is personally devastating and often leads to conflict between loved ones.
+                p We are telling the story of a couple who deeply love each other but find themselves in opposing camps when one of them experiences a crisis of faith and leaves the church. Can their marriage survive? Should it?
+                p This film is not meant to debate the issues. In fact, controversial faith issues have little presence in the the story. Rather, we are focusing on relationships and the challenge of understanding and being understood. We wish to create a film that ultimately encourages empathy and kindness over fear and hatred.
 
 
       .row(v-for="(question, i) in questions")
@@ -148,6 +149,10 @@
         .question
           .info
             .submit(@click="submitSurvey") Submit Answers
+      .row
+        div
+        .contact Contact : <a href="mailto:hello@1k-words.co">hello@1k-words.co</a>
+
 
       iframe(id="hidden_iframe" name="hidden_iframe" @load="surveySubmitComplete" style="display:none")
       form(ref="hiddenForm" action="https://docs.google.com/forms/d/e/1FAIpQLSfXWdboGtiSjfApibLnZsUr4tRjnXQx7aepIcsCkALXeOYrIQ/formResponse" method="post" target="hidden_iframe")
@@ -185,7 +190,7 @@
     .sub            {font-size:16px; color:#1C2E3D; font-weight: 500; margin-top:15px;
       span          {color:white; font-style: italic; }
     }
-    .blurb          {font-size:18px; color:#385F7D; line-height: 1.4; font-weight: 500; margin-top:35px; }
+    .blurb          {font-size:18px; color:#1B415E; line-height: 1.4; font-weight: 500; margin-top:35px; }
     .more           {font-size:16px; font-style:normal; color:#385F7D; font-weight: 600; display: inline-flex; margin-top:20px; cursor:pointer; padding:5px 0;
       .cross        {width:13px; padding-right:15px; margin-top:1px;
         img         {transition: transform 300ms; transform-origin: center;}
@@ -221,6 +226,13 @@
   form      {display: none;
     .spider {display: none; }
   }
+
+  .contact    {font-size:15px; color:#777878; font-weight:400; background:#EDEDED; padding:40px 40px 20px ; font-style: italic; display: flex;
+    a         {color:#8B8E8E; border-bottom:solid 1px; text-decoration: none; margin-left:10px;
+      &:hover {color:#003659; border-bottom-color:#003659; }
+    }
+  }
+
   @media screen and (min-width:800px){
     .row                {display: grid; grid-template-columns: 240px auto;
       .logo             {padding-top:50px;
@@ -242,6 +254,7 @@
         .blurb          {font-size:25px;  }
       }
     }
+    .contact {padding-left:70px; }
   }
 
   // ------------------------------------ Complete
