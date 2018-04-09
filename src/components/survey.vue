@@ -13,11 +13,6 @@
           id: "477568040"
           val: this.$route.params.referrer
         }
-        # contact info
-        contactInfo : {
-          id: "1436875844"
-          val: ""
-        }
       }
       questions: [
         {
@@ -77,13 +72,18 @@
       ]
 
     methods:
-      submit :()->
+      submitSurvey :()->
+        return if this.$refs.spiderweb.value != ""
         @formSubmitted = true
         @$refs.hiddenForm.submit()
 
-      submitComplete:()->
+      surveySubmitComplete:()->
         return if !@formSubmitted
         @submitSuccess = true
+
+      submitEmail : () ->
+        return if this.$refs.spiderweb2.value != ""
+        @$refs.emailForm.submit()
 
       # ------------------------------------ Helpers
       getParameterByName: (name)->
@@ -95,13 +95,23 @@
 
 <template lang="pug">
   .survey-page
-    .complete(v-if="submitSuccess" )
-      .row
-        .logo
-          img(src="../assets/compiled/dark-logo.svg")
-        p Submission complete, thank you!
-      .row
-        input(v-model="metaData.contactInfo.val")
+    form.complete(ref="emailForm" v-if="submitSuccess" action="https://docs.google.com/forms/d/e/1FAIpQLScMGElzYPSxgF9pflI7VYqbO4CKLHNVkWqogtAEBT9wSzekgA/formResponse")
+      .top
+        .row
+          .title Thank you!
+          .blurb If you are interested in receiving (rare) updates as the film progresses submit your email address below.
+          .blurb.never We will never share your email address with anyone!
+        .row.form
+          input.spider(name="spiderweb" ref="spiderweb2")
+          input(type="hidden" name="entry.1504567568" v-model="$route.params.referrer")
+          input(placeholder="email" name="entry.1506356406")
+      .row.white
+        div
+        .question
+          .info
+            .submit(@click="submitEmail") Send me Updates
+
+
     .survey(v-if="!submitSuccess")
       .row
         .logo
@@ -137,10 +147,11 @@
         div
         .question
           .info
-            .submit(@click="submit") Submit Answers
+            .submit(@click="submitSurvey") Submit Answers
 
-      iframe(id="hidden_iframe" name="hidden_iframe" @load="submitComplete" style="display:none")
+      iframe(id="hidden_iframe" name="hidden_iframe" @load="surveySubmitComplete" style="display:none")
       form(ref="hiddenForm" action="https://docs.google.com/forms/d/e/1FAIpQLSfXWdboGtiSjfApibLnZsUr4tRjnXQx7aepIcsCkALXeOYrIQ/formResponse" method="post" target="hidden_iframe")
+        input.net(name="spiderweb" ref="spiderweb")
         //- Meta Data
         input(v-for="item in metaData" v-model="item.val" :name="`entry.${item.id}`")
         input(v-model="showDetails" name="entry.528084191")
@@ -162,26 +173,27 @@
     letter-spacing: 0.02em;
   }
   * {transition: all 300ms; }
+
   .row                {
 
     //- Info Section
     .logo{justify-self:center;
       img{width:135px; display: none; }
     }
+    .content        {max-width:650px; padding:20px 40px; font-style: italic; }
+    .title          {font-size:30px; color:white; @include garamond; border-bottom:solid 1px #4E86B0; display: inline-block; font-style:normal; font-weight: 400; padding-bottom: 20px; }
+    .sub            {font-size:16px; color:#1C2E3D; font-weight: 500; margin-top:15px;
+      span          {color:white; font-style: italic; }
+    }
+    .blurb          {font-size:18px; color:#385F7D; line-height: 1.4; font-weight: 500; margin-top:35px; }
+    .more           {font-size:16px; font-style:normal; color:#385F7D; font-weight: 600; display: inline-flex; margin-top:20px; cursor:pointer; padding:5px 0;
+      .cross        {width:13px; padding-right:15px; margin-top:1px;
+        img         {transition: transform 300ms; transform-origin: center;}
+        &.close img {transform:rotate(45deg); }
+      }
+      &:hover       {color:white}
+    }
     .top-info         {background:#73C1FF;
-      .content        {max-width:650px; padding:20px 40px; font-style: italic; }
-      .title          {font-size:30px; color:white; @include garamond; border-bottom:solid 1px #4E86B0; display: inline-block; font-style:normal; font-weight: 400; padding-bottom: 20px; }
-      .sub            {font-size:16px; color:#1C2E3D; font-weight: 500; margin-top:15px;
-        span          {color:white; font-style: italic; }
-      }
-      .blurb          {font-size:18px; color:#385F7D; line-height: 1.4; font-weight: 500; margin-top:35px; }
-      .more           {font-size:16px; font-style:normal; color:#385F7D; font-weight: 600; display: inline-flex; margin-top:20px; cursor:pointer; padding:5px 0;
-        .cross        {width:13px; padding-right:15px; margin-top:1px;
-          img         {transition: transform 300ms; transform-origin: center;}
-          &.close img {transform:rotate(45deg); }
-        }
-        &:hover       {color:white}
-      }
     }
 
     .number   {display: none}
@@ -206,7 +218,9 @@
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
   }
-  form      {display: none;}
+  form      {display: none;
+    .spider {display: none; }
+  }
   @media screen and (min-width:800px){
     .row                {display: grid; grid-template-columns: 240px auto;
       .logo             {padding-top:50px;
@@ -226,6 +240,24 @@
         .title          {font-size:60px; padding-bottom: 20px; }
         .sub            {font-size:26px;}
         .blurb          {font-size:25px;  }
+      }
+    }
+  }
+
+  // ------------------------------------ Complete
+
+  .complete {display: initial;
+    .top    { background:#73C1FF;}
+    .row    {max-width:400px; padding:40px; display: flex; align-items: center; flex-direction: column; margin:0 auto;
+      .logo {
+        img {display: initial; width:80px; }
+      }
+      .title{width: 100%; }
+      input{width: 100%; height:40px; font-size:15px; padding:0 15px; box-sizing: border-box;}
+      &.form{padding-top:0;; }
+      &.white{background: white; padding:10px 0; max-width:initial;
+        .question{background: white}
+        .info{background: white; }
       }
     }
   }
