@@ -42,7 +42,8 @@
           val:"",
           answers:[
             "They don't listen but try to convince me of the rightness of their side",
-            "We've had respectful conversations about our differences"
+            "We've had respectful conversations about our differences",
+            "Conversations are strained or we avoid the subject completely"
           ]
         },
         {
