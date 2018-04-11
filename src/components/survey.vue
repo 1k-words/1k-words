@@ -138,7 +138,7 @@
         .number {{`${i+1} of ${questions.length}`}}
         .question
           .info
-            .txt {{question.question}}
+            .txt(v-bind:class="{checks:question.kind == 'checks'}") {{question.question}}
             .answers
               checkbox(v-if="question.kind == 'checks'" v-for="(answer, key) in question.answers" v-model="answer.val" :key="key" )
                 .label {{answer.txt}}
@@ -204,7 +204,11 @@
     .number   {display: none}
     .question {background:#E6E7E8; padding:20px 0;
       .info   {padding: 0 40px;
-        .txt  {font-size:20px; color:#3B3B38; margin-bottom:10px; padding-bottom:10px; border-bottom:solid 1px #BBBBBB;   }
+        .txt  {font-size:20px; color:#3B3B38; margin-bottom:10px; padding-bottom:10px; border-bottom:solid 1px #BBBBBB;
+          &.checks{
+            &:after{content:"(check all that apply)"; font-size:13px; font-style: italic; margin-left:15px; }
+          }
+        }
       }
     }
     .answers  {display: flex; flex-direction: column;}
