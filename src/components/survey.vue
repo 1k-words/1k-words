@@ -37,13 +37,12 @@
         }
         {
           question: "Do you feel like your loved ones who believe opposite of you, understand where you're coming from?"
-          kind:"checks"
           id:"1325524876"
-          val:"",
+          kind:"checks"
           answers:[
-            "They don't listen but try to convince me of the rightness of their side",
-            "We've had respectful conversations about our differences",
-            "Conversations are strained or we avoid the subject completely"
+            {val:false, txt:"They don't listen but try to convince me of the rightness of their side"}
+            {val:false, txt:"We've had respectful conversations about our differences"}
+            {val:false, txt:"Conversations are strained or we avoid the subject completely"}
           ]
         },
         {
