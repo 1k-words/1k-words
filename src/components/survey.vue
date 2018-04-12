@@ -69,6 +69,12 @@
             {val: false, txt: "Yes, I would invest for a percentage of ownership of the film"}
             {val: false, txt: "No, I would not"}
           ]
+        },
+        {
+          question : "Is there anything you would like to share with the film creators?"
+          id:"1554435837"
+          kind:"long"
+          val:""
         }
       ]
 
@@ -131,7 +137,7 @@
             transition(name="fade")
               .blurb.full-details(v-if="showDetails" )
                 p Many members of the LDS church are experiencing very real crises of faith and loss of belief. This painful experience is personally devastating and often leads to conflict between loved ones.
-                p We are telling the story of a couple who deeply love each other but find themselves in opposing camps when one of them experiences a crisis of faith and leaves the church. Can their marriage survive? Should it?
+                p We are telling the story of a couple who deeply love each other but find themselves in opposing camps when one of them experiences a crisis of faith and leaves the church.
                 p This film is not meant to debate the issues. In fact, controversial faith issues have little presence in the the story. Rather, we are focusing on relationships and the challenge of understanding and being understood. We wish to create a film that ultimately encourages empathy and kindness over fear and hatred.
 
 
@@ -144,7 +150,7 @@
               checkbox(v-if="question.kind == 'checks'" v-for="(answer, key) in question.answers" v-model="answer.val" :key="key" )
                 .label {{answer.txt}}
               radio.try(v-if="question.kind == 'radio'" v-for="(answer, key) in question.answers" v-model="question.val" :val="answer" :key="key") {{answer}}
-
+              textarea(v-if="question.kind == 'long'" v-model="question.val" rows="6")
       .row
         div
         .question
@@ -168,8 +174,14 @@
             input(:name="`entry.${question.id}`" v-model="question.val" v-if="question.val != ''" )
 
           //- Checkboxes
-          div(v-else)
+          div(v-else-if="question.kind == 'checks'")
             input(v-for="answer in question.answers" :name="`entry.${question.id}`" v-model="answer.txt" v-if="answer.val != false" )
+
+          //- Inputs
+          div(v-else)
+            input(:name="`entry.${question.id}`" v-model="question.val" v-if="question.val != ''" )
+
+
 </template>
 
 <style lang="scss" >
@@ -201,7 +213,6 @@
     }
     .top-info         {background:#73C1FF;
     }
-
     .number   {display: none}
     .question {background:#E6E7E8; padding:20px 0;
       .info   {padding: 0 40px;
@@ -216,6 +227,8 @@
     .lexi     {margin-top:8px;
       .label  {font-size:15px; color:#777878; font-weight:400; padding-left:6px;  }
     }
+    textarea  {border: none; font-size:15px !important; color:#777878; font-weight:600; font-family: "proxima-nova";  padding:10px;}
+
 
     .submit   {height:55px; background:#73C1FF; display: inline-flex; align-items: center; justify-content: center; padding:0 40px; cursor:pointer; color:white; font-weight: bold; text-shadow: 0 1px 1px rgba(black,0.2);
       &:hover {background:#3698E6;}
