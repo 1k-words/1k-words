@@ -37,7 +37,7 @@
         }
         {
           question: "Do you feel like your loved ones who believe opposite of you, understand where you're coming from?"
-          kind:"radio"
+          kind:"checks"
           id:"1325524876"
           val:"",
           answers:[
